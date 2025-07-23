@@ -54,13 +54,21 @@ for key, group in df.groupby("组合键"):
     last_seen_time = vuln_test_times[-1]
     retest_time_str = "\n".join(all_system_times)
 
-    # 判断该漏洞是否出现在系统的最后一次测试中
+    # 判断该漏洞是否出现在系统的最后一次测试中，并计算复测通过时间
+    # 找到最后一次出现时间在系统所有测试时间中的下一个时间点
+    passed_time = ""
+    if last_seen_time in all_system_times:
+        idx = all_system_times.index(last_seen_time)
+        if idx + 1 < len(all_system_times):
+            next_time = all_system_times[idx + 1]
+            # 判断该漏洞在下一个时间点是否还出现
+            if next_time not in vuln_test_times:
+                passed_time = next_time
+    
     if system_last_time in vuln_test_times:
         fix_status = "未修复"
-        passed_time = ""
     else:
         fix_status = "已修复"
-        passed_time = system_last_time
 
     results.append({
         "系统": system,
@@ -101,7 +109,6 @@ color_dict = {
 header = [cell.value for cell in ws[1]]
 level_col = header.index('漏洞等级')
 status_col = header.index('漏洞修复情况')
-print(level_col, status_col)
 
 for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
     # 漏洞等级
