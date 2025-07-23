@@ -47,7 +47,7 @@ python3 vuln_tracking.py your_input_file_path  you_output_file_path
 
 ## Q&A
 
-
+### 部分资产更新
 
 Q1：对于只扫描了部分资产的情况下如何更新？（修复判定是根据最后一次扫描的修复状态，**最后一次没有出现的漏洞则会判定为修复**）
 
