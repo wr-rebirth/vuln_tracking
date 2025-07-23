@@ -14,6 +14,8 @@ output_file = sys.argv[2]
 # 读取原始表格
 df = pd.read_excel(srcfile, dtype=str, engine="openpyxl")
 df.fillna("", inplace=True)
+# 去除所有字段的前后空格
+df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
 # 将漏洞等级列中的紧急都替换为严重
 df['漏洞等级'] = df['漏洞等级'].replace('紧急', '严重')
